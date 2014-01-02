@@ -1,0 +1,54 @@
+body{
+  font-family: 'Open Sans', sans-serif;
+  background:#ecf0f1;
+}
+
+a{
+  text-decoration:none;
+  color:white;
+}
+
+.logo{
+  float:left;
+  color:white;
+  font-weight:600;
+  margin-right:15px;
+  margin-left:20px;
+  padding-right:30px; 
+}
+
+.logos{
+  float:left;
+  text-align:center;
+  color:transparent;
+  padding-right:30px; 
+  padding-bottom: 30px;
+}
+
+/* START carrot NAV */
+
+.carrot-nav{
+  background:#e67e22;
+  border-radius:6px;
+  position: relative;
+  padding-top:15px;
+  padding-bottom:15px;
+  font-size:14px;
+  padding-left:20px;
+  border-bottom: #d35400 3px solid;
+  margin-bottom:10px;
+  text-align:right;
+}
+
+.carrot-nav ul { margin: 0; padding: 0; list-style-type: none; list-style-image: none; }
+
+.carrot-nav li { margin-right: 0px; display: inline; }
+
+.carrot-nav ul li a { text-decoration:none;  margin: 0px; padding: 15px 20px 15px 20px; color:#ffffff; }
+
+.carrot-nav ul li a:hover { color: #fff; background-color:#d35400; text-decoration:none; }
+
+.carrot-nav li.current-menu-item a{ color: #fff; text-decoration:none; background-color:#d35400; }
+
+.carrot-nav li.current_page_item  { color: #fff; text-decoration:none; background-color:#d35400; }
+
