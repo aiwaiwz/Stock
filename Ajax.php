@@ -32,9 +32,19 @@ $name = $_GET['name'];
 $namber = $_GET['namber'];
 
 if($id != null and $name != null and $namber != null){
+	
+	$query = "SELECT c_price FROM category WHERE c_materialid = $id";
+	$qry_result = mysql_query($query) or die(mysql_error());
+	$price = 1 ; 
+	while($row = mysql_fetch_array($qry_result)){
+		$price = $row[c_price] ;
+	}
+	echo '<h5>Hello';
+	$amount = $price * $namber ;
+	echo '</h5>';
 	//add data
 	$query = "INSERT INTO  `test` (`no` ,`id` ,`name` ,`number` ,`price` ,`amount`)
-			VALUES (   NULL ,  '$id',  '$name',  '$namber',  '',  '' );";
+			VALUES (   NULL ,  '$id',  '$name',  '$namber',  '$price',  '$amount' );";
 	$qry_result = mysql_query($query) or die(mysql_error());
 }
 
@@ -43,6 +53,7 @@ $query = "SELECT * FROM test order by no";
 
 $qry_result = mysql_query($query) or die(mysql_error());
 	
+
 //Build Result String
 $display_string = '<table class="table">';
 $display_string .= '<tr class="active">';
@@ -56,7 +67,8 @@ $display_string .= "<th>เลือก</th>";
 $display_string .= "</tr>";
 
 // Insert a new row in the table for each person returned
-$tmpCount = 1;
+$tmpCount = 1 ;
+$sumamount= 0 ;
 while($row = mysql_fetch_array($qry_result)){
 	$display_string .= "<tr>";
 	//$display_string .= "<td>$row[no]</td>";
@@ -75,6 +87,7 @@ while($row = mysql_fetch_array($qry_result)){
                         </td>';
 	$display_string .= "</tr>";
 	$tmpCount ++;
+	$sumamount = $sumamount + $row[amount];
 	
 }
 
@@ -85,7 +98,7 @@ $display_string .= "<td></td>";
 $display_string .= "<td>รวมเป็นเงินทั้งสิ้น</td>";
 $display_string .= "<td></td>";
 $display_string .= "<td></td>";
-$display_string .= "<td>$row[amount]</td>";
+$display_string .= "<td>$sumamount</td>";
 $display_string .= '<td></td>';
 $display_string .= "</tr>";
 
