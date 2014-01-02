@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jan 03, 2014 at 01:40 AM
+-- Generation Time: Jan 02, 2014 at 03:27 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -12,8 +12,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- 
 -- Database: `ajax`
 -- 
-CREATE DATABASE `ajax` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `ajax`;
 
 -- --------------------------------------------------------
 
@@ -244,25 +242,22 @@ INSERT INTO `category` VALUES (115, 'วัสดุสำนักงาน', 1
 
 CREATE TABLE `test` (
   `no` int(11) NOT NULL auto_increment,
-  `id` int(6) NOT NULL,
-  `name` varchar(150) collate utf8_unicode_ci NOT NULL,
+  `id` varchar(25) collate utf8_unicode_ci NOT NULL,
+  `name` varchar(25) collate utf8_unicode_ci NOT NULL,
   `number` int(11) NOT NULL,
   `price` double NOT NULL,
   `amount` double NOT NULL,
   PRIMARY KEY  (`no`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=227 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=208 ;
 
 -- 
 -- Dumping data for table `test`
 -- 
 
-INSERT INTO `test` VALUES (219, 103003, 'กาวดักแมลงวัน', 3, 75, 225);
-INSERT INTO `test` VALUES (220, 103011, 'มูลี่', 2, 265, 530);
-INSERT INTO `test` VALUES (221, 110001, 'เจลล้างมือฆ่าเชื้อโรคแบบแห้ง', 2, 250, 500);
-INSERT INTO `test` VALUES (222, 104002, 'โฟม 0.5 นิ้ว', 2, 15, 30);
-INSERT INTO `test` VALUES (223, 101010, 'กระดาษต่อเนื่อง', 6, 560, 3360);
-INSERT INTO `test` VALUES (225, 109001, 'น้ำกลั่น', 15, 8, 120);
-INSERT INTO `test` VALUES (226, 102011, 'สาย LAN', 15, 3850, 57750);
+INSERT INTO `test` VALUES (207, '101046/04', 'กระดาษกาวย่น 2 นิ้ว', 2, 0, 0);
+INSERT INTO `test` VALUES (203, '112005/03', 'กล่องใส่แผ่น CD แบบหนาจุ ', 3, 0, 0);
+INSERT INTO `test` VALUES (201, '112010/02', 'ม้วนล้าง VDO', 1, 0, 0);
+INSERT INTO `test` VALUES (202, '112010/02', 'ม้วนล้าง VDO', 10, 0, 0);
 
 -- --------------------------------------------------------
 
