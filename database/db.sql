@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jan 02, 2014 at 03:27 AM
+-- Generation Time: Jan 05, 2014 at 10:46 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -12,6 +12,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- 
 -- Database: `ajax`
 -- 
+CREATE DATABASE `ajax` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `ajax`;
 
 -- --------------------------------------------------------
 
@@ -242,22 +244,28 @@ INSERT INTO `category` VALUES (115, 'วัสดุสำนักงาน', 1
 
 CREATE TABLE `test` (
   `no` int(11) NOT NULL auto_increment,
-  `id` varchar(25) collate utf8_unicode_ci NOT NULL,
-  `name` varchar(25) collate utf8_unicode_ci NOT NULL,
+  `id` int(6) NOT NULL,
+  `name` varchar(150) collate utf8_unicode_ci NOT NULL,
   `number` int(11) NOT NULL,
   `price` double NOT NULL,
   `amount` double NOT NULL,
-  PRIMARY KEY  (`no`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=208 ;
+  `u_name` varchar(255) collate utf8_unicode_ci NOT NULL,
+  PRIMARY KEY  (`no`),
+  KEY `u_id` (`u_name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=237 ;
 
 -- 
 -- Dumping data for table `test`
 -- 
 
-INSERT INTO `test` VALUES (207, '101046/04', 'กระดาษกาวย่น 2 นิ้ว', 2, 0, 0);
-INSERT INTO `test` VALUES (203, '112005/03', 'กล่องใส่แผ่น CD แบบหนาจุ ', 3, 0, 0);
-INSERT INTO `test` VALUES (201, '112010/02', 'ม้วนล้าง VDO', 1, 0, 0);
-INSERT INTO `test` VALUES (202, '112010/02', 'ม้วนล้าง VDO', 10, 0, 0);
+INSERT INTO `test` VALUES (231, 103003, 'กาวดักแมลงวัน', 7, 75, 525, 'kongpasom');
+INSERT INTO `test` VALUES (229, 107001, 'กระบอกไฟฉายพร้อมถ่าน', 3, 135, 405, '0');
+INSERT INTO `test` VALUES (230, 108002, 'น้ำมันไฮโดรลิก', 2, 370, 740, '0');
+INSERT INTO `test` VALUES (232, 108002, 'น้ำมันไฮโดรลิก', 4, 370, 1480, 'kongpasom ');
+INSERT INTO `test` VALUES (233, 108002, 'น้ำมันไฮโดรลิก', 4, 370, 1480, 'kongpasom ');
+INSERT INTO `test` VALUES (234, 108002, 'น้ำมันไฮโดรลิก', 4, 370, 1480, 'kongpasom ');
+INSERT INTO `test` VALUES (235, 109001, 'น้ำกลั่น', 6, 8, 48, 'kongpasom ');
+INSERT INTO `test` VALUES (236, 103002, 'กระดาษ JRT', 4, 900, 3600, 'aiwaiwz ');
 
 -- --------------------------------------------------------
 
@@ -281,10 +289,11 @@ CREATE TABLE `users` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- 
 -- Dumping data for table `users`
 -- 
 
-INSERT INTO `users` VALUES (4, 'kongpasom', '301f64593ee7c728b94705fc06649d764612643e178b77ec666056ee8d477982', '1e967bfc4aa2b3b8', 'kongpasom@hotmail.com', 'Chakkrit', 'Termritthikun', 'male', 'Lab', 'Programming', 850091023, 0);
+INSERT INTO `users` VALUES (4, 'kongpasom', 'a3125cb6a2ddca647da7bbb89583f75e899ce859a2114e91a6dbc292d57c061c', 'd9ad6df761cba83', 'kongpasom@hotmail.com', 'Chakkrit', 'Termritthikun', 'male', 'Lab', 'Programming', 850091023, 0);
+INSERT INTO `users` VALUES (7, 'aiwaiwz', 'feaadd2fa3a872864930eead066d28f45fe294664c4f36a49b8be302cd831a6d', 'f6464f618f32834', 'sasithornzii@gmail.com', 'Sasithorn', 'Namoungon', 'female', 'Test', 'Programming', 0, 0);

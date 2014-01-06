@@ -1,3 +1,27 @@
+<?php 
+
+    // First we execute our common code to connection to the database and start the session 
+    require("common.php"); 
+     
+    // At the top of the page we check to see whether the user is logged in or not 
+    if(empty($_SESSION['user'])) 
+    { 
+        // If they are not, we redirect them to the login page. 
+        header("Location: login.php"); 
+         
+        // Remember that this die statement is absolutely critical.  Without it, 
+        // people can view your members-only content without logging in. 
+        die("Redirecting to login.php"); 
+    } 
+     
+    // Everything below this point in the file is secured by the login system 
+     
+    // We can display the user's username to them by reading it from the session array.  Remember that because 
+    // a username is user submitted content we must use htmlentities on it before displaying it to the user. 
+	
+?> 
+
+
 <!DOCTYPE html>
 <html>
 
@@ -5,6 +29,7 @@
 
     <meta charset="UTF-8">
     <script type='text/javascript' src='//code.jquery.com/jquery-1.9.1.js'></script>
+	<script type='text/javascript' src='src/js/additem.js'></script>
     <link href="src/css/main.css" rel="stylesheet">
     <!-- Bootstrap core CSS -->
     <link href="src/css/bootstrap.css" rel="stylesheet">
@@ -30,6 +55,64 @@
       window.ontouchstart = function(){};
     }
   </script>
+	  
+
+<script type='text/javascript'>
+
+<!-- 
+//Browser Support Code
+function ajaxFunction(select) {
+    var ajaxRequest; // The variable that makes Ajax possible!
+
+    try {
+        // Opera 8.0+, Firefox, Safari
+        ajaxRequest = new XMLHttpRequest();
+    } catch (e) {
+        // Internet Explorer Browsers
+        try {
+            ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                // Something went wrong
+                alert("Your browser broke!");
+                return false;
+            }
+        }
+    }
+    // Create a function that will receive data 
+    // sent from the server and will update
+    // div section in the same page.
+    ajaxRequest.onreadystatechange = function () {
+        if (ajaxRequest.readyState == 4) {
+            $('#ajaxDiv').html(ajaxRequest.responseText);
+            // var ajaxDisplay = document.getElementById('ajaxDiv');
+            // ajaxDisplay.innerHTML = ajaxRequest.responseText;
+        }
+    }
+    // Now get the value from user and pass it to
+    // server script.
+    var type = document.getElementById('class').value;
+    var i = document.getElementById("class").selectedIndex;
+    var wpm = document.getElementById('class').options[i].text;
+    var sex = document.getElementById('value').value;
+    var queryString = "?id=" + type;
+	var username = "<?php echo $_SESSION['user']['username']; ?>";
+    queryString += "&name=" + wpm + "&namber=" + sex + "&username=" + username;
+	
+    if (select == true) {
+        ajaxRequest.open("GET", "Ajax.php?username="+ username , true);
+    } else {
+        ajaxRequest.open("GET", "Ajax.php" + queryString, true);
+    }
+    ajaxRequest.send(null);
+
+}
+
+//-->
+
+</script>
 	 
 	  
  <script type='text/javascript'>//<![CDATA[ 
@@ -46,7 +129,6 @@ $(document).ready(function () { // ran when the document is fully loaded
 	setInterval(function() {
 		ajaxFunction(true);  
 	}, 1000);
-	
 	
 	var tmpop ;
 	
@@ -192,9 +274,6 @@ $(document).ready(function () { // ran when the document is fully loaded
             };
         }
 		
-		
-		
-		
         var select = $('#class');
         if (select.prop) {
             var options = select.prop('options');
@@ -258,6 +337,8 @@ $(document).ready(function () { // ran when the document is fully loaded
 		var datestart =  convertDate($("#date-start" ).val());
 		var dateend = convertDate($("#date-end" ).val());
 		
+		$("html, body").animate({ scrollTop: $("#summary-material").offset().top }, 0);
+		
 		if(valueType == 'activity'){
 			objective = $("input:radio[name=gender]:checked + label").text();
 			var line1 = '<h5>วัตถุประสงค์ในการเบิก<a style="padding-left: 50px"></a>'+objective+project+'</h5><br>';
@@ -309,62 +390,6 @@ $(document).ready(function () { // ran when the document is fully loaded
 </script>
 	  
 	  
-	<script language="javascript" type="text/javascript">
-	<!-- 
-	//Browser Support Code
-	function ajaxFunction(select){
-	 var ajaxRequest;  // The variable that makes Ajax possible!
-		
-	 try{
-	   // Opera 8.0+, Firefox, Safari
-	   ajaxRequest = new XMLHttpRequest();
-	 }catch (e){
-	   // Internet Explorer Browsers
-	   try{
-		  ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
-	   }catch (e) {
-		  try{
-			 ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
-		  }catch (e){
-			 // Something went wrong
-			 alert("Your browser broke!");
-			 return false;
-		  }
-	   }
-	 }
-	 // Create a function that will receive data 
-	 // sent from the server and will update
-	 // div section in the same page.
-	 ajaxRequest.onreadystatechange = function(){
-	   if(ajaxRequest.readyState == 4){
-		   $('#ajaxDiv').html(ajaxRequest.responseText);
-		 // var ajaxDisplay = document.getElementById('ajaxDiv');
-		 // ajaxDisplay.innerHTML = ajaxRequest.responseText;
-	   }
-	 }
-	 // Now get the value from user and pass it to
-	 // server script.
-	 var type = document.getElementById('class').value;
-	 var i = document.getElementById("class").selectedIndex;
-	 var wpm = document.getElementById('class').options[i].text;
-	 var sex = document.getElementById('value').value;
-	 var queryString = "?id=" + type ;
-	 queryString +=  "&name=" + wpm + "&namber=" + sex;
-	 
-	   if(select==true){
-		   ajaxRequest.open("GET", "Ajax.php", true);
-	   }
-	   else{
-		   ajaxRequest.open("GET", "Ajax.php" + queryString, true);
-	   }
-	 ajaxRequest.send(null); 
-	 
-	}
-	
-	//-->
-	</script>	  
-	  
-
 </head>
 
 <body>
@@ -392,17 +417,7 @@ function DateThai($strDate)
 <div class="container">  
     
     
-    <a href="#" title=""><img src="pic/Untitled-1.png" alt="Logo"></a>
-    <br /><br />
-    <div class="carrot-nav">
-    <ul>
-       <li><a href="#">คู่มือการใช้งาน</a></li>
-       <li><a href="#">บัญชีผู้ใช้งาน</a></li>
-       <li><a href="#">ติดต่อ</a></li>
-       <li><a href="#">ออกจากระบบ</a></li>
-    </ul>
-  </div><!-- /.navbar-collapse -->  
-    <br>
+<? require "menu.php"; ?>	
     
     <div class="row">
 
@@ -619,14 +634,8 @@ function DateThai($strDate)
       </div><!--/row-->
 </div>
 
+<? require "footer.php"; ?>	
 
-<div class="container">
-    <!-- Site footer -->
-    <div class="footer">
-        <p>&copy; Company 2013</p>
-    </div>
-</div>
-    
 <script>
 
 </script>

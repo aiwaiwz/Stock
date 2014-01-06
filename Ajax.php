@@ -30,8 +30,9 @@ require "config.php";
 $id = $_GET['id'];
 $name = $_GET['name'];
 $namber = $_GET['namber'];
+$u_name = $_GET['username'];
 
-if($id != null and $name != null and $namber != null){
+if($id != null and $name != null and $namber != null and $u_name != null){
 	
 	$query = "SELECT c_price FROM category WHERE c_materialid = $id";
 	$qry_result = mysql_query($query) or die(mysql_error());
@@ -39,17 +40,17 @@ if($id != null and $name != null and $namber != null){
 	while($row = mysql_fetch_array($qry_result)){
 		$price = $row[c_price] ;
 	}
-	echo '<h5>Hello';
+
 	$amount = $price * $namber ;
 	echo '</h5>';
 	//add data
-	$query = "INSERT INTO  `test` (`no` ,`id` ,`name` ,`number` ,`price` ,`amount`)
-			VALUES (   NULL ,  '$id',  '$name',  '$namber',  '$price',  '$amount' );";
+	$query = "INSERT INTO  `test` (`no` ,`id` ,`name` ,`number` ,`price` ,`amount` ,`u_name`)
+			VALUES (   NULL ,  '$id',  '$name',  '$namber',  '$price',  '$amount' , '$u_name ' );";
 	$qry_result = mysql_query($query) or die(mysql_error());
 }
 
 //build query
-$query = "SELECT * FROM test order by no";
+$query = "SELECT * FROM test WHERE `u_name` = '$u_name' order by no";
 
 $qry_result = mysql_query($query) or die(mysql_error());
 	
@@ -90,7 +91,6 @@ while($row = mysql_fetch_array($qry_result)){
 	$sumamount = $sumamount + $row[amount];
 	
 }
-
 
 $display_string .= "<tr>";
 $display_string .= "<td></td>";
