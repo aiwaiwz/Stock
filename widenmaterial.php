@@ -110,6 +110,30 @@ function ajaxFunction(select) {
 
 }
 
+function saveorder() {
+    var ajaxRequest; // The variable that makes Ajax possible!
+    try {
+        // Opera 8.0+, Firefox, Safari
+        ajaxRequest = new XMLHttpRequest();
+    } catch (e) {
+        // Internet Explorer Browsers
+        try {
+            ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                // Something went wrong
+                alert("Your browser broke!");
+                return false;
+            }
+        }
+    }
+	var username = "<?php echo $_SESSION['user']['username']; ?>";
+    ajaxRequest.open("GET", "saveorder.php?name="+ username , true);
+    ajaxRequest.send(null);
+}
+
 //-->
 
 </script>
@@ -124,6 +148,7 @@ $(document).ready(function () { // ran when the document is fully loaded
 	
 	$("#summary-material" ).hide();
 	$("#activitymore" ).hide();
+	$("#save-material" ).hide();
 	
 	
 	setInterval(function() {
@@ -353,6 +378,17 @@ $(document).ready(function () { // ran when the document is fully loaded
 		$("#ajaxDivClone th:last-child, #ajaxDivClone td:last-child").remove();
     });
 	
+	$("#save").click(function () {
+		
+		saveorder();
+		$("#select-material" ).hide();
+		$("#selected-material" ).hide();
+		$("#summary-material" ).hide();
+		$("#save-material" ).show();
+		//var url = "main.php";    
+		//$(location).attr('href',url);
+	});
+	
 	$("#back-edit").click(function () {
 		$("#select-material" ).show();
 		$("#selected-material" ).show();
@@ -360,8 +396,10 @@ $(document).ready(function () { // ran when the document is fully loaded
     });
 	
 	$("#deleteall").click(function () {
+		var username = "<?php echo $_SESSION['user']['username']; ?>";
 		if (confirm("Do you want to delete all ?")){
-			var theUrl ="deleteorder.php?type=ALL";
+			var theUrl ="deleteorder.php?type=ALL&name="+username;
+			console.log(theUrl);
 			var xmlHttp = null;
 			xmlHttp = new XMLHttpRequest();
 			xmlHttp.open( "GET", theUrl, false );
@@ -586,20 +624,25 @@ function DateThai($strDate)
 				   <div id='content-head'>
 				   
 					<div class="row">
-					  <div class="col-md-4">
-					      <h5> ปีงบประมาณ <a style="padding-left: 50px"><?php echo (date("Y")+543); ?></a></h5>
+					  <div class="col-md-6">
+					      <h5> ปีงบประมาณ <a style="padding-left: 43px"><?php echo (date("Y")+543); ?></a></h5>
 					      <h5> วัน/เดือน/ปี <a style="padding-left: 50px"><?php $datenow = date("Y-m-d H:i:s"); echo  DateThai($datenow) ?></a></h5>
-					      <h5> ชื่อผู้ขอเบิก <a style="padding-left: 50px"><?php echo  'USERNAME' ?></a></h5>
-					      <h5> สังกัดงาน <a style="padding-left: 50px"><?php  echo  'DEPARTMENT' ?></a></h5>
+					      <h5> ชื่อผู้ขอเบิก <a style="padding-left: 50px"><?php echo $_SESSION['user']['firstname'].' '.$_SESSION['user']['lastname'];?></a></h5>
+					      <h5> ตำแหน่ง <a style="padding-left: 67px"><?php echo $_SESSION['user']['position']; ?></a></h5>	
+						  <h5> สังกัดงาน <a style="padding-left: 60px"><?php  echo  $_SESSION['user']['department']; ?></a></h5>
 					  </div>
-					  <div class="col-md-4">
-						<h5><br></h5>
-						<h5><br></h5>
-						<h5> ตำแหน่ง <a style="padding-left: 20px"><?php  echo  'POSITION' ?></a></h5>
-						<br>
-					  </div>
-					  <div class="col-md-4">
-						<h5>เลขที่<a style="padding-left: 20px"><?php  echo  'No.' ?></a></h5>
+					  
+					  <?php
+						$query = "SELECT `id_widen` FROM `widenid` WHERE  `id_widen` = (SELECT max(`id_widen`) FROM `widenid`)";
+						$qry_result = mysql_query($query) or die(mysql_error());
+						$no = 1 ; 
+						while($row = mysql_fetch_array($qry_result)){
+							$no =  $row[id_widen]+ $no;
+						}
+					  ?>
+					  
+					  <div class="col-md-6">
+						<h5 style="padding-left: 150px">เลขที่<a style="padding-left: 40px"><?php  echo $no.'/'.(date("Y")+543); ?></a></h5>
 					  
 					  </div>
 					</div>
@@ -618,7 +661,7 @@ function DateThai($strDate)
                     <div class="col-xs-6 col-md-3">
                     </div> 
                     <div class="col-xs-6 col-md-3">
-                        <button id="confirm" type="submit" class="btn btn-block btn btn-success">ยืนยัน</button>
+                        <button id="save" type="submit" class="btn btn-block btn btn-success">ยืนยัน</button>
                     </div>
                     <div class="col-xs-6 col-md-3">
 						<input id="back-edit" type='button' class="btn btn-block btn btn-danger" value='กลับ'/>
@@ -626,6 +669,19 @@ function DateThai($strDate)
                     <div class="col-xs-6 col-md-3">
                     </div>   
                   </div>
+              </div>
+            </div>
+			
+			
+			<div id="save-material" class="panel panel-carot">
+
+              <div class="panel-body">
+				<h3>บันทึกการเบิกสำเร็จ</h3>
+                <hr>
+				<h4>Order number :
+				 <?php echo $no; ?> 
+                <h4> 
+				สามารถตรวจสอบ รายการเบิกวัสดุย้อนหลังได้ที่เมนู...
               </div>
             </div>
 			

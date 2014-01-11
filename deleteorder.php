@@ -3,9 +3,10 @@
 require "config.php";
 
 $type = $_REQUEST['type'];
+$name = $_REQUEST['name'];
 
-if($type == 'ALL'){
-	$sql_articles = "DELETE FROM test";
+if($type == 'ALL' and  $name != null){
+	$sql_articles = "DELETE FROM test WHERE u_name = '$name'";
 	if(mysql_query($sql_articles)) {
 		echo "YES";
 	}

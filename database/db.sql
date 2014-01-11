@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jan 05, 2014 at 10:46 PM
+-- Generation Time: Jan 11, 2014 at 05:45 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -252,20 +252,14 @@ CREATE TABLE `test` (
   `u_name` varchar(255) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`no`),
   KEY `u_id` (`u_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=237 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=258 ;
 
 -- 
 -- Dumping data for table `test`
 -- 
 
-INSERT INTO `test` VALUES (231, 103003, 'กาวดักแมลงวัน', 7, 75, 525, 'kongpasom');
-INSERT INTO `test` VALUES (229, 107001, 'กระบอกไฟฉายพร้อมถ่าน', 3, 135, 405, '0');
-INSERT INTO `test` VALUES (230, 108002, 'น้ำมันไฮโดรลิก', 2, 370, 740, '0');
-INSERT INTO `test` VALUES (232, 108002, 'น้ำมันไฮโดรลิก', 4, 370, 1480, 'kongpasom ');
-INSERT INTO `test` VALUES (233, 108002, 'น้ำมันไฮโดรลิก', 4, 370, 1480, 'kongpasom ');
-INSERT INTO `test` VALUES (234, 108002, 'น้ำมันไฮโดรลิก', 4, 370, 1480, 'kongpasom ');
-INSERT INTO `test` VALUES (235, 109001, 'น้ำกลั่น', 6, 8, 48, 'kongpasom ');
-INSERT INTO `test` VALUES (236, 103002, 'กระดาษ JRT', 4, 900, 3600, 'aiwaiwz ');
+INSERT INTO `test` VALUES (254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
+INSERT INTO `test` VALUES (255, 106004, 'สายคล้องตู้สลิงพร้อมกุญแจ', 5, 65, 325, 'kongpasom ');
 
 -- --------------------------------------------------------
 
@@ -297,3 +291,46 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` VALUES (4, 'kongpasom', 'a3125cb6a2ddca647da7bbb89583f75e899ce859a2114e91a6dbc292d57c061c', 'd9ad6df761cba83', 'kongpasom@hotmail.com', 'Chakkrit', 'Termritthikun', 'male', 'Lab', 'Programming', 850091023, 0);
 INSERT INTO `users` VALUES (7, 'aiwaiwz', 'feaadd2fa3a872864930eead066d28f45fe294664c4f36a49b8be302cd831a6d', 'f6464f618f32834', 'sasithornzii@gmail.com', 'Sasithorn', 'Namoungon', 'female', 'Test', 'Programming', 0, 0);
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `widenid`
+-- 
+
+CREATE TABLE `widenid` (
+  `id_widen` int(11) NOT NULL auto_increment,
+  `date_widen` date NOT NULL,
+  `u_id` int(11) NOT NULL,
+  `w_id` int(11) NOT NULL,
+  PRIMARY KEY  (`id_widen`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Dumping data for table `widenid`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `widenmaterial`
+-- 
+
+CREATE TABLE `widenmaterial` (
+  `w_id` int(11) NOT NULL,
+  `no` int(11) NOT NULL,
+  `id` int(6) NOT NULL,
+  `name` varchar(150) collate utf8_unicode_ci NOT NULL,
+  `number` int(11) NOT NULL,
+  `price` double NOT NULL,
+  `amount` double NOT NULL,
+  `u_name` varchar(255) collate utf8_unicode_ci NOT NULL,
+  KEY `u_id` (`u_name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Dumping data for table `widenmaterial`
+-- 
+
+INSERT INTO `widenmaterial` VALUES (1, 254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
