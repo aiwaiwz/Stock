@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jan 11, 2014 at 05:45 PM
+-- Generation Time: Jan 12, 2014 at 12:05 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -239,6 +239,29 @@ INSERT INTO `category` VALUES (115, 'วัสดุสำนักงาน', 1
 -- --------------------------------------------------------
 
 -- 
+-- Table structure for table `objective`
+-- 
+
+CREATE TABLE `objective` (
+  `o_id` int(11) NOT NULL auto_increment,
+  `o_type` tinyint(4) NOT NULL,
+  `o_project` varchar(150) collate utf8_unicode_ci NOT NULL,
+  `o_activity` varchar(150) collate utf8_unicode_ci NOT NULL,
+  `o_date_st` date NOT NULL,
+  `o_date_nd` date NOT NULL,
+  PRIMARY KEY  (`o_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+-- 
+-- Dumping data for table `objective`
+-- 
+
+INSERT INTO `objective` VALUES (1, 0, '', '', '0000-00-00', '0000-00-00');
+INSERT INTO `objective` VALUES (2, 1, 'Test', 'TH', '2014-01-04', '2014-01-25');
+
+-- --------------------------------------------------------
+
+-- 
 -- Table structure for table `test`
 -- 
 
@@ -252,14 +275,13 @@ CREATE TABLE `test` (
   `u_name` varchar(255) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`no`),
   KEY `u_id` (`u_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=258 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=261 ;
 
 -- 
 -- Dumping data for table `test`
 -- 
 
-INSERT INTO `test` VALUES (254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
-INSERT INTO `test` VALUES (255, 106004, 'สายคล้องตู้สลิงพร้อมกุญแจ', 5, 65, 325, 'kongpasom ');
+INSERT INTO `test` VALUES (260, 103007, 'ถุงขยะสีขาว', 4, 40, 160, 'kongpasom ');
 
 -- --------------------------------------------------------
 
@@ -303,13 +325,20 @@ CREATE TABLE `widenid` (
   `date_widen` date NOT NULL,
   `u_id` int(11) NOT NULL,
   `w_id` int(11) NOT NULL,
+  `o_id` int(11) NOT NULL,
   PRIMARY KEY  (`id_widen`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 -- 
 -- Dumping data for table `widenid`
 -- 
 
+INSERT INTO `widenid` VALUES (1, '2014-01-11', 4, 5, 0);
+INSERT INTO `widenid` VALUES (2, '2014-01-11', 4, 6, 0);
+INSERT INTO `widenid` VALUES (3, '2014-01-11', 4, 7, 0);
+INSERT INTO `widenid` VALUES (4, '2014-01-11', 4, 8, 0);
+INSERT INTO `widenid` VALUES (5, '2014-01-12', 4, 9, 1);
+INSERT INTO `widenid` VALUES (6, '2014-01-12', 4, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -333,4 +362,28 @@ CREATE TABLE `widenmaterial` (
 -- Dumping data for table `widenmaterial`
 -- 
 
+INSERT INTO `widenmaterial` VALUES (4, 259, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (4, 258, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (4, 255, 106004, 'สายคล้องตู้สลิงพร้อมกุญแจ', 5, 65, 325, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (4, 254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (3, 259, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (3, 258, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (3, 255, 106004, 'สายคล้องตู้สลิงพร้อมกุญแจ', 5, 65, 325, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (3, 254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (2, 259, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (2, 258, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (2, 255, 106004, 'สายคล้องตู้สลิงพร้อมกุญแจ', 5, 65, 325, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (2, 254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
 INSERT INTO `widenmaterial` VALUES (1, 254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (5, 254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (5, 255, 106004, 'สายคล้องตู้สลิงพร้อมกุญแจ', 5, 65, 325, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (5, 258, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (5, 259, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (6, 254, 101003, 'กระดาษกาวย่น 1 นิ้ว', 5, 25, 125, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (6, 255, 106004, 'สายคล้องตู้สลิงพร้อมกุญแจ', 5, 65, 325, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (6, 258, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (6, 259, 106003, 'เทปอลูมิเนียม2นิ้ว', 3, 220, 660, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (7, 260, 103007, 'ถุงขยะสีขาว', 4, 40, 160, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (8, 260, 103007, 'ถุงขยะสีขาว', 4, 40, 160, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (9, 260, 103007, 'ถุงขยะสีขาว', 4, 40, 160, 'kongpasom ');
+INSERT INTO `widenmaterial` VALUES (10, 260, 103007, 'ถุงขยะสีขาว', 4, 40, 160, 'kongpasom ');

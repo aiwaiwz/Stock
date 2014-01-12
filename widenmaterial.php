@@ -28,7 +28,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <script type='text/javascript' src='//code.jquery.com/jquery-1.9.1.js'></script>
+    <script type='text/javascript' src='src/js/jquery-1.9.1.js'></script>
 	<script type='text/javascript' src='src/js/additem.js'></script>
     <link href="src/css/main.css" rel="stylesheet">
     <!-- Bootstrap core CSS -->
@@ -110,7 +110,7 @@ function ajaxFunction(select) {
 
 }
 
-function saveorder() {
+function saveorder(value) {
     var ajaxRequest; // The variable that makes Ajax possible!
     try {
         // Opera 8.0+, Firefox, Safari
@@ -129,9 +129,22 @@ function saveorder() {
             }
         }
     }
+	var type = 0;
+	var project = document.getElementById('project').value;
+	var activity = document.getElementById('activity').value;
+	var date_start = document.getElementById('date-start').value;
+	var date_end = document.getElementById('date-end').value;
 	var username = "<?php echo $_SESSION['user']['username']; ?>";
-    ajaxRequest.open("GET", "saveorder.php?name="+ username , true);
-    ajaxRequest.send(null);
+	if(value == 'activity' ){
+		type = 1 ;
+		var urlpar = "saveorder.php?name="+username+"&type="+type+"&project="+project+"&activity="+activity+"&date_st="+date_start+"&date_nd="+date_end;
+		ajaxRequest.open("GET", urlpar , true);
+		ajaxRequest.send(null);
+	}
+	else{
+		ajaxRequest.open("GET", "saveorder.php?name="+username+"&type="+type , true);
+		ajaxRequest.send(null);
+	} 
 }
 
 //-->
@@ -143,6 +156,8 @@ function saveorder() {
 $(window).load(function(){
 $(document).ready(function () { // ran when the document is fully loaded
     var sel = $('#type');
+
+	var username = "<?php echo $_SESSION['user']['username']; ?>";
 	
 	ajaxFunction(false);
 	
@@ -378,15 +393,25 @@ $(document).ready(function () { // ran when the document is fully loaded
 		$("#ajaxDivClone th:last-child, #ajaxDivClone td:last-child").remove();
     });
 	
+	function deleteItembyUser(){
+		var theUrl ="deleteorder.php?type=ALL&name="+username;
+		console.log(theUrl);
+		var xmlHttp = null;
+		xmlHttp = new XMLHttpRequest();
+		xmlHttp.open( "GET", theUrl, false );
+		xmlHttp.send( null );
+		return xmlHttp.responseText;
+	}
+	
 	$("#save").click(function () {
-		
-		saveorder();
-		$("#select-material" ).hide();
-		$("#selected-material" ).hide();
-		$("#summary-material" ).hide();
-		$("#save-material" ).show();
-		//var url = "main.php";    
-		//$(location).attr('href',url);
+		if (confirm("Do you want to save order ?")){
+			saveorder(valueType);
+			$("#select-material" ).hide();
+			$("#selected-material" ).hide();
+			$("#summary-material" ).hide();
+			$("#save-material" ).show();
+			deleteItembyUser();
+		}
 	});
 	
 	$("#back-edit").click(function () {
@@ -396,15 +421,9 @@ $(document).ready(function () { // ran when the document is fully loaded
     });
 	
 	$("#deleteall").click(function () {
-		var username = "<?php echo $_SESSION['user']['username']; ?>";
+		
 		if (confirm("Do you want to delete all ?")){
-			var theUrl ="deleteorder.php?type=ALL&name="+username;
-			console.log(theUrl);
-			var xmlHttp = null;
-			xmlHttp = new XMLHttpRequest();
-			xmlHttp.open( "GET", theUrl, false );
-			xmlHttp.send( null );
-			return xmlHttp.responseText;
+			deleteItembyUser();
 		}
     });
 	
@@ -466,9 +485,9 @@ function DateThai($strDate)
             </div>
               
             <div class="list-group">
-            <a href="#" class="list-group-item active">เบิกวัสดุ</a>
+            <a href="widenmaterial.php" class="list-group-item active">เบิกวัสดุ</a>
             <a href="#" class="list-group-item">ดูจำนวนวัสดุคงเหลือ</a>
-            <a href="#" class="list-group-item">ตรวจสอบสถานะ</a>
+            <a href="track.php" class="list-group-item">ตรวจสอบสถานะ</a>
             <a href="#" class="list-group-item">ดูรายงานการเบิก</a>
            </div>  
               
@@ -546,7 +565,6 @@ function DateThai($strDate)
                     </div> 
                     <div class="col-xs-6 col-md-3">
 						<input id="add" type='button' onclick='ajaxFunction(false)' class="btn btn-block btn btn-success" value='เพิ่ม'/>
-
                     </div>
                     <div class="col-xs-6 col-md-3">
                         <button id="reset" type="reset" class="btn btn-block btn btn-danger">ยกเลิก</button>
@@ -655,7 +673,7 @@ function DateThai($strDate)
 				  
 				  <div id='objective'></div>
 				  
-						
+				  
                   <div class="row">
 
                     <div class="col-xs-6 col-md-3">
