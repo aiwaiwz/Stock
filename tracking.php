@@ -53,5 +53,34 @@ if($w_id != null ){
 	$display_string .= "</table>";
 	echo $display_string;	
 	
+	//build query
+	$query = "SELECT * FROM `objective` WHERE `o_id` = (SELECT `o_id` FROM  widenid WHERE w_id = '$w_id' )";
+	//"SELECT * FROM `widenmaterial` WHERE `w_id`= '$w_id' order by no";
+	$qry_result = mysql_query($query) or die(mysql_error());
+	
+		
+	echo '<br>';
+	
+	while($row = mysql_fetch_array($qry_result)){
+		$display = $row[o_type];
+		
+		$objective = "";
+		if($row[o_type] == 0){
+			$objective = "กรณีใช้ภายในสำนักงาน";
+			echo '<h5>วัตถุประสงค์ในการเบิก<a style="padding-left: 50px"></a>'.$objective.'</h5><br>' ;
+		}
+		else{
+			$objective = "กรณีเบิกใช้ภายในโครงการ".$row[o_project];
+			echo '<h5>วัตถุประสงค์ในการเบิก<a style="padding-left: 45px"></a>'.$objective.'</h5>' ;
+			echo '<h5>ภายใต้กิจกรรม<a style="padding-left: 90px"></a>'.$row[o_activity].'</h5>';
+			echo '<h5>ระหว่างวันที่<a style="padding-left: 105px"></a>ระหว่างวันที่ '.$row[o_date_st].' ถึง '.$row[o_date_nd].'</h5><br>';
+		
+		}
+		
+			
+		
+		
+	}
+		
 }
 ?>
