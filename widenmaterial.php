@@ -7,11 +7,11 @@
     if(empty($_SESSION['user'])) 
     { 
         // If they are not, we redirect them to the login page. 
-        header("Location: login.php"); 
+        header("Location: member/login.php"); 
          
         // Remember that this die statement is absolutely critical.  Without it, 
         // people can view your members-only content without logging in. 
-        die("Redirecting to login.php"); 
+        die("Redirecting to member/login.php"); 
     } 
      
     // Everything below this point in the file is secured by the login system 
@@ -102,9 +102,9 @@ function ajaxFunction(select) {
     queryString += "&name=" + wpm + "&namber=" + sex + "&username=" + username;
 	
     if (select == true) {
-        ajaxRequest.open("GET", "Ajax.php?username="+ username , true);
+        ajaxRequest.open("GET", "ajax/Ajax.php?username="+ username , true);
     } else {
-        ajaxRequest.open("GET", "Ajax.php" + queryString, true);
+        ajaxRequest.open("GET", "ajax/Ajax.php" + queryString, true);
     }
     ajaxRequest.send(null);
 
@@ -186,7 +186,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุเชื้อเพลิงและหล่อลื่น'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุสำนักงาน'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -199,7 +199,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุงานบ้านงานครัว'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุคอมพิวเตอร์'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -212,7 +212,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุก่อสร้าง'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุงานบ้านงานครัว'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -225,7 +225,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุสำนักงาน'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุโฆษณาและเผยแพร่'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -238,7 +238,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุพาหนะและขนส่ง'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุการเกษตร'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -251,7 +251,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุโฆษณาและเผยแพร่'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุก่อสร้าง'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -277,7 +277,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุคอมพิวเตอร์'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุเชื้อเพลิงและหล่อลื่น'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -290,7 +290,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุวิทยาศาสตร์และการแพทย์'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุพาหนะและขนส่ง'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -303,7 +303,7 @@ $(document).ready(function () { // ran when the document is fully loaded
             var newOptions = {
 				<?php
 				require "config.php";	
-				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุการเกษตร'  ORDER BY  `c_materialid` ";
+				$query = "SELECT  `c_materialid` ,  `c_materialname` FROM category WHERE  `c_name` =  'วัสดุวิทยาศาสตร์และการแพทย์'  ORDER BY  `c_materialid` ";
 				$qry_result = mysql_query($query) or die(mysql_error());
 				$tmp = "";
 				while($row = mysql_fetch_array($qry_result)){
@@ -394,7 +394,7 @@ $(document).ready(function () { // ran when the document is fully loaded
     });
 	
 	function deleteItembyUser(){
-		var theUrl ="deleteorder.php?type=ALL&name="+username;
+		var theUrl ="order/deleteorder.php?type=ALL&name="+username;
 		console.log(theUrl);
 		var xmlHttp = null;
 		xmlHttp = new XMLHttpRequest();
@@ -402,6 +402,7 @@ $(document).ready(function () { // ran when the document is fully loaded
 		xmlHttp.send( null );
 		return xmlHttp.responseText;
 	}
+	
 	
 	$("#save").click(function () {
 		if (confirm("Do you want to save order ?")){
@@ -528,7 +529,7 @@ function DateThai($strDate)
 							<select id="type" class="form-control">
 							
 							<?php
-							$query = "SELECT DISTINCT c_name FROM category ORDER BY  `c_id` ";
+							$query = "SELECT DISTINCT c_name FROM category ORDER BY  `c_materialid` ";
 							$qry_result = mysql_query($query) or die(mysql_error());
 							$tmp = 1 ;
 							echo '<option value="0">--เลือกประเภทวัสดุ--</option>';

@@ -68,12 +68,21 @@ $(document).ready(function () {
 	console.log("Hello");
 	$("#report" ).hide();
 	
+	$("#approve").click(function () {
+		approve_cancel(true)
+		window.location.replace("approve.php");
+    });
 
+	$("#cancel").click(function () {
+		approve_cancel(false);
+		window.location.replace("approve.php");
+    });	
+	
 	$("#back").click(function () {
 		$("#tracking" ).show();
 	    $("#report" ).hide();
 		
-    });	
+    });
 	
 }); // close the ready listener
 
@@ -82,7 +91,10 @@ $(document).ready(function () {
 	  
 <script>
 
+	var tmpW_ID = ""; 
+
 	function showorder(w_id,no,year){
+		tmpW_ID =  w_id;
 		$("#tracking" ).hide();
 	    $("#report" ).show();
 		var ajaxRequest; // The variable that makes Ajax possible!
@@ -121,6 +133,22 @@ $(document).ready(function () {
 		//$("#objective" ).html();
 	}
 	
+	function approve_cancel(type){
+		var theUrl = "";
+		if(type == true){
+			theUrl = "order/approve.php?type=yes&w_id="+tmpW_ID;
+		}
+		else{
+			theUrl = "order/approve.php?type=no&w_id="+tmpW_ID;
+		}
+		console.log(theUrl);
+		var xmlHttp = null;
+		xmlHttp = new XMLHttpRequest();
+		xmlHttp.open( "GET", theUrl, false );
+		xmlHttp.send( null );
+		return xmlHttp.responseText;
+	}
+	
 
 
 </script>	  
@@ -151,7 +179,7 @@ $(document).ready(function () {
 			<div class="list-group">
             <a href="widenmaterial.php" class="list-group-item ">เบิกวัสดุ</a>
             <a href="#" class="list-group-item">ดูจำนวนวัสดุคงเหลือ</a>
-            <a href="track.php" class="list-group-item active">ตรวจสอบสถานะ</a>
+            <a href="track.php" class="list-group-item ">ตรวจสอบสถานะ</a>
             <a href="#" class="list-group-item">ดูรายงานการเบิก</a>
            </div>   
               
@@ -165,7 +193,7 @@ $(document).ready(function () {
             <div class="list-group">
             <a href="#" class="list-group-item">นำเข้าวัสดุ</a>
             <a href="#" class="list-group-item">ดูวัสดุใกล้หมด</a>
-            <a href="#" class="list-group-item">อนุมัติการเบิก</a>
+            <a href="#" class="list-group-item active">อนุมัติการเบิก</a>
             <a href="#" class="list-group-item">พิมพ์ใบเบิกจ่าย</a>
             <a href="#" class="list-group-item">เพิ่มผู้ใช้งาน</a>
             <a href="#" class="list-group-item">ดูรายงาน</a>
@@ -216,10 +244,17 @@ $(document).ready(function () {
 						$newD = DateThai($row[date_widen]);
 						$strYear = date("Y",strtotime($row[date_widen]))+543;
 						$no_order = $row[id_widen].'/'.$strYear ;
+						$dateend = DateThai($row[end_order]);
+						$thisyear = date("Y",strtotime($row[end_order]))+543;
 						$display_string .= "<tr>";
 						$display_string .= "<td>$newD</td>";
 						$display_string .= "<td>$no_order</td>";
-						$display_string .= "<td></td>";
+						if($thisyear >= $strYear){
+							$display_string .= "<td>$dateend</td>";
+						}
+						else{
+							$display_string .= "<td>รอดำเนินการ</td>";
+						}
 						$display_string .= "<td>$row[status]</td>";
 						$display_string .= '<td>
 							<div class="myclass" id="'.$row[w_id].'">
@@ -269,11 +304,13 @@ $(document).ready(function () {
 				  
                   <div class="row">
                     <div class="col-md-4">
+						<input id="approve" type='button' class="btn btn-block btn btn-success" value='อนุมัติ'/>
                     </div>
                     <div class="col-md-4">
-						<input id="back" type='button' class="btn btn-block btn btn-danger" value='กลับ'/>
+						<input id="cancel"  type='button' class="btn btn-block btn btn-warning" value='ไม่อนุมัติ'/>
                     </div>
 					<div class="col-md-4">
+						<input id="back" type='button' class="btn btn-block btn btn-danger" value='กลับ'/>
                     </div>
                   </div>
               </div>

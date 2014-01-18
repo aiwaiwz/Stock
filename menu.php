@@ -7,7 +7,7 @@ echo'
 				<li><a href="#">คู่มือการใช้งาน</a></li>
 				<li><a href="edit_account.php">บัญชีผู้ใช้งาน</a></li>
 				<li><a href="#">ติดต่อ</a></li>
-				<li><a href="logout.php">ออกจากระบบ</a></li>
+				<li><a href="member/logout.php">ออกจากระบบ</a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->  
   <br>';

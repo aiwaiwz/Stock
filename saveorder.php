@@ -53,8 +53,8 @@ if($name != null and $type != null){
 		$o_id = $row[id];
 	}
 	
-	$query = "INSERT INTO  `widenid` (`id_widen` ,`date_widen` ,`u_id` ,`w_id` ,`o_id`)
-			VALUES (   NULL ,  '$date',  '$u_id',  '$w_id' ,  '$o_id' );";
+	$query = "INSERT INTO  `widenid` (`id_widen` ,`date_widen` ,`u_id` ,`w_id` ,`o_id` ,`status`)
+			VALUES (   NULL ,  '$date',  '$u_id',  '$w_id' ,  '$o_id' , 'รออนุมัติ' );";
 	$qry_result = mysql_query($query) or die(mysql_error());
 
 }	

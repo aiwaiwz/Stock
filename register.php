@@ -2,6 +2,16 @@
 
     // First we execute our common code to connection to the database and start the session 
     require("common.php"); 
+	
+	if(empty($_SESSION['user'])) 
+    { 
+        // If they are not, we redirect them to the login page. 
+        header("Location: member/login.php"); 
+         
+        // Remember that this die statement is absolutely critical.  Without it, 
+        // people can view your members-only content without logging in. 
+        die("Redirecting to member/login.php"); 
+    } 
      
     // This if statement checks to determine whether the registration form has been submitted 
     // If it has, then the registration code is run, otherwise the form is displayed 
@@ -249,12 +259,12 @@
         } 
          
         // This redirects the user back to the login page after they register 
-        header("Location: login.php"); 
+        header("Location: member/login.php"); 
          
         // Calling die or exit after performing a redirect using the header function 
         // is critical.  The rest of your PHP script will continue to execute and 
         // will be sent to the user if you do not die or exit. 
-        die("Redirecting to login.php"); 
+        die("Redirecting to member/login.php"); 
     } 
      
 ?> 
@@ -262,96 +272,170 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
-	<!-- META -->
-	<title>Register</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="description" content="" />
-	
-	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />
-	<link rel="stylesheet" type="text/css" href="style.css" media="all" /> 
-	
-	<!-- Javascript -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="js/kickstart.js"></script>
+
+  <meta charset="UTF-8">
+  
+  
+  <link href="src/css/main.css" rel="stylesheet">
+  <script type='text/javascript' src='src/js/jquery-1.9.1.js'></script>
+  <!-- Bootstrap core CSS -->
+    <link href="src/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="src/signin.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="src/justified-nav.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+  <title>Flat UI Navigation - CodePen</title>
+
+  <script>
+    window.open    = function(){};
+    window.print   = function(){};
+    // Support hover state for mobile.
+    if (false) {
+      window.ontouchstart = function(){};
+    }
+  </script>
+	 
 
 </head>
 <body>
 
-<div  class="center" id="banner">
-    <a href="#" title="" class="logo"><img src="header_01.png" alt="Logo"></a>
+
+<div class="container">    
+    
+
+    
+</div>
+<br>
+<div class="container">  
+    
+<? require "menu.php"; ?>	
+    
+    <div class="row">
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="panel panel-carot">
+            <div class="panel-heading">
+              <h3 class="panel-title">เมนู</h3>
+            </div>
+              
+			<div class="list-group">
+            <a href="widenmaterial.php" class="list-group-item ">เบิกวัสดุ</a>
+            <a href="#" class="list-group-item">ดูจำนวนวัสดุคงเหลือ</a>
+            <a href="track.php" class="list-group-item">ตรวจสอบสถานะ</a>
+            <a href="#" class="list-group-item">ดูรายงานการเบิก</a>
+           </div>   
+              
+          </div>
+            
+          <div class="panel panel-carot">
+            <div class="panel-heading">
+              <h3 class="panel-title">สำหรับเจ้าหน้าที่พัสดุ</h3>
+            </div>
+              
+            <div class="list-group">
+            <a href="#" class="list-group-item">นำเข้าวัสดุ</a>
+            <a href="#" class="list-group-item">ดูวัสดุใกล้หมด</a>
+            <a href="track.php" class="list-group-item">อนุมัติการเบิก</a>
+            <a href="#" class="list-group-item">พิมพ์ใบเบิกจ่าย</a>
+            <a href="register.php" class="list-group-item active">เพิ่มผู้ใช้งาน</a>
+            <a href="#" class="list-group-item">ดูรายงาน</a>
+           </div>  
+              
+          </div>
+            
+        </div><!--/span-->
+		
+		
+		       <div class="col-xs-11 col-sm-9" >
+
+            <div id="tracking" class="panel panel-carot">
+
+              <div class="panel-body">
+                  <h3>เพิ่มผู้ใช้งาน</h3>
+                   <hr>
+				    <form action="register.php" method="post"> 
+						<div class="row">
+						
+						<div class="col-md-6">
+							
+							<input id="text1" class="form-control " type="text" name="firstname" placeholder="ชื่อ"/><br>
+							<select id="gender" class="form-control " name="gender" >
+								<option value="0">-- เพศ --</option>
+								<option value="male">ชาย</option>
+								<option value="female">หญิง</option>
+							</select><br>
+							<input id="text1" class="form-control " type="text" name="position"   placeholder="ตำแหน่ง"/><br>
+							<input id="text1" class="form-control " type="email" name="email" placeholder="E-mail"/><br>
+							<input id="text1" class="form-control " type="password" name="password" placeholder="Create a password"/><br>
+							
+							<select id="type" class="form-control "  name="types">
+							<option value="0">สำหรับพนักงานทั่วไป</option>
+							<option value="1">สำหรับผู้บริหาร</option>
+							<option value="2">สำหรับเจ้าหน้าที่พัสดุ</option>
+							</select><br>
+							
+							
+						</div>
+						<div class="col-md-6">
+							
+							<input id="text1" class="form-control " type="text" name="lastname" placeholder="นามสกุล"/><br>
+							<input id="text1" class="form-control "  type="text" name="department" placeholder="แผนก"/><br>
+							<input id="text1" class="form-control "  type="text" name="tel" placeholder="เบอร์โทรศัพท์"/><br>
+							<input id="text1" class="form-control " type="text" name="username" placeholder="Username"/><br>
+							<input id="text1" class="form-control " type="password" name="repassword" placeholder="Re enter password"/><br>
+							
+						</div>
+					  </div>
+					  <br>
+					  <div class="row">
+						
+						<div class="col-xs-6 col-md-4">
+						</div>
+						
+						<div class="col-xs-6 col-md-4">
+							<button id="confirm"  type="submit" class="btn btn-block btn btn-success">Register</button>
+						</div>
+						
+						<div class="col-xs-6 col-md-4">
+						</div>
+						
+					  </div>
+					</form>
+              </div>
+            </div>
+			
+			
+        </div>        
+      </div><!--/row-->
 </div>
 
-<!-- Menu Horizontal -->
-  <ul class="center menu">
-  <li><a href="#"><i class="icon-home"></i> หน้าหลัก</a></li>
-  <li><a href="#"><i class="icon-external-link"></i> เบิกวัสดุ</a></li>
-  <li><a href="#"><i class="icon-book"></i> รายงานสถิติการเบิกวัสดุ</a></li>
-  <li><a href="#"><i class="icon-question-sign"></i> คู่มือการใช้โปรแกรม</a></li>
-  <li><a href="#"><i class="icon-envelope"></i> ติดต่อ</a></li>
-  <li class="current"><a href=""><i class="icon-user"></i> เข้าสู่ระบบ</a>
-  </ul>
+<? require "footer.php"; ?>	
+    
+<script>
 
+</script>
 
-<div class="grid">
-
-	<div class="col_12" style="margin-top:20px;">
-		<h1 class="center">
-		<p><i class="icon-desktop"></i></p>
-		Register</h1>
-        <form action="register.php" method="post"> 
-		<h6 style="color:#999;margin-bottom:40px;" class="center">
-		<input id="text1" type="text" name="firstname" placeholder="ชื่อ"/>
-		<input id="text1" type="text" name="lastname" placeholder="นามสกุล"/>
-        <br /><br />
-
-        <select id="gender" name="gender" >
-        <option value="0">-- เพศ --</option>
-        <option value="male">ชาย</option>
-        <option value="female">หญิง</option>
-        </select>
-        <br /><br />
-
-		<input id="text1" type="text" name="department" placeholder="แผนก"/>
-		<input id="text1" type="text" name="position"   placeholder="ตำแหน่ง"/>
-        <br /><br />
-         
-
-		<input id="text1" type="text" name="tel" placeholder="เบอร์โทรศัพท์"/>
-		<input id="text1" type="email" name="email" placeholder="E-mail"/>
-         <br /><br />
-         
-        <input id="text1" type="text" name="username" placeholder="Username"/>
-         <br /><br />
-
-        <input id="text1" type="password" name="password" placeholder="Create a password"/>
-        <input id="text1" type="password" name="repassword" placeholder="Re enter password"/>
-         <br /><br />
-         
-         <select id="type" name="types">
-        <option value="0">สำหรับพนักงานทั่วไป</option>
-        <option value="1">สำหรับผู้บริหาร</option>
-        <option value="2">สำหรับเจ้าหน้าที่พัสดุ</option>
-        </select>
-        <br /><br />
-		<button type="submit" class="medium center button orange" ><i class="icon-check"></i> Register</button>
-
-        <a style="margin-left:40px;" class="medium center button green" href="login.php"><i class="icon-signin"></i> Login</a>
-        </form>
-		</h6>
-
-	</div>
-</div> <!-- End Grid -->
-
-
-<!-- ===================================== START FOOTER ===================================== -->
-<div class="clear"></div>
-<div id="footer">
-&copy; Copyright 2013 All Rights Reserved. By <a href="http://www.99lime.com">Aiw</a>
-</div>
-
+  <script>
+    if (document.location.search.match(/type=embed/gi)) {
+      window.parent.postMessage('resize', "*");
+    }
+  </script>
 
 </body>
+
 </html>
+	
