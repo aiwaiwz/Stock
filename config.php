@@ -9,6 +9,8 @@ $dbpass = "1234";
 //Setting database name
 $dbname = "ajax";
 
+
+
 //Connect to MySQL Server
 mysql_connect($dbhost, $dbuser, $dbpass) or die("Error Connect to Database");
 //Select Database

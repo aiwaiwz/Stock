@@ -2,6 +2,19 @@
 
 require "../config.php";
 
+function DateThai($strDate)
+{
+	$strYear = date("Y",strtotime($strDate))+543;
+	$strMonth= date("n",strtotime($strDate));
+	$strDay= date("j",strtotime($strDate));
+	$strHour= date("H",strtotime($strDate));
+	$strMinute= date("i",strtotime($strDate));
+	$strSeconds= date("s",strtotime($strDate));
+	$strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
+	$strMonthThai=$strMonthCut[$strMonth];
+	return "$strDay $strMonthThai $strYear";
+}
+
 $w_id = $_GET['w_id'];
 
 if($w_id != null ){
@@ -73,14 +86,8 @@ if($w_id != null ){
 			$objective = "กรณีเบิกใช้ภายในโครงการ".$row[o_project];
 			echo '<h5>วัตถุประสงค์ในการเบิก<a style="padding-left: 45px"></a>'.$objective.'</h5>' ;
 			echo '<h5>ภายใต้กิจกรรม<a style="padding-left: 90px"></a>'.$row[o_activity].'</h5>';
-			echo '<h5>ระหว่างวันที่<a style="padding-left: 105px"></a>ระหว่างวันที่ '.$row[o_date_st].' ถึง '.$row[o_date_nd].'</h5><br>';
-		
+			echo '<h5>ระหว่างวันที่<a style="padding-left: 105px"></a>ระหว่างวันที่ '.DateThai($row[o_date_st]).' ถึง '.DateThai($row[o_date_nd]).'</h5><br>';
 		}
-		
-			
-		
-		
-	}
-		
+	}	
 }
 ?>
