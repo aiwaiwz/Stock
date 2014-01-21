@@ -151,12 +151,11 @@ $(document).ready(function () {
 			ajaxRequest.onreadystatechange = function () {
 				if (ajaxRequest.readyState == 4) {
 					$('#ajaxDivClone').html(ajaxRequest.responseText);					
-					var line1 = '<h5">เลขที่<a style="padding-left: 87px">' + no + '/' + year +'</a></h5>';
+					var line1 = '<h5>เลขที่<a style="padding-left: 87px">' + no + '/' + year +'</a></h5>';
 					$("#no_report" ).html(line1);
 					$("#date_w" ).html(date_w);
 					$("#print-data" ).show();
 					$("#button_print" ).show();
-					
 				}
 			}
 			// Now get the value from user and pass it to
@@ -255,7 +254,7 @@ $(document).ready(function () {
 					<div class="row">
 					  <div class="col-md-6">
 					      <div id='no_report'>
-							<h5>เลขที่<a style="padding-left: 50px"><?php  echo $no.'/'.(date("Y")+543); ?></a></h5>
+						  <h5>เลขที่<a style="padding-left: 50px"><?php  echo $no.'/'.(date("Y")+543); ?></a></h5>
 						 </div>
 					      <h5> ปีงบประมาณ <a style="padding-left: 43px"><?php echo (date("Y")+543); ?></a></h5>
 					      <div id='date_w'>
@@ -286,8 +285,6 @@ $(document).ready(function () {
                     </div>
                   </div>
 
-				
-				
             </div>
         </div>        
       </div><!--/row-->

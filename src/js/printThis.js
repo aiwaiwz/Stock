@@ -138,7 +138,7 @@
     // defaults
     $.fn.printThis.defaults = {
         debug: false,           // show the iframe for debugging
-        importCSS: true,        // import parent page css
+        importCSS: true,       // import parent page css
         printContainer: true,   // print outer container/$.selector
         loadCSS: "src/css/print.css",  // load an additional css file
         pageTitle: "",          // add title to print page
