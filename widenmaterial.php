@@ -155,6 +155,9 @@ function saveorder(value) {
  <script type='text/javascript'>//<![CDATA[ 
 $(window).load(function(){
 $(document).ready(function () { // ran when the document is fully loaded
+
+	$("#menu-user a:eq(0)").addClass("active");
+
     var sel = $('#type');
 
 	var username = "<?php echo $_SESSION['user']['username']; ?>";
@@ -477,40 +480,6 @@ function DateThai($strDate)
     
 <? require "menu.php"; ?>	
     
-    <div class="row">
-
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-          <div class="panel panel-carot">
-            <div class="panel-heading">
-              <h3 class="panel-title">เมนู</h3>
-            </div>
-              
-            <div class="list-group">
-            <a href="widenmaterial.php" class="list-group-item active">เบิกวัสดุ</a>
-            <a href="#" class="list-group-item">ดูจำนวนวัสดุคงเหลือ</a>
-            <a href="track.php" class="list-group-item">ตรวจสอบสถานะ</a>
-            <a href="#" class="list-group-item">ดูรายงานการเบิก</a>
-           </div>  
-              
-          </div>
-            
-          <div class="panel panel-carot">
-            <div class="panel-heading">
-              <h3 class="panel-title">สำหรับเจ้าหน้าที่พัสดุ</h3>
-            </div>
-              
-            <div class="list-group">
-            <a href="#" class="list-group-item">นำเข้าวัสดุ</a>
-            <a href="#" class="list-group-item">ดูวัสดุใกล้หมด</a>
-            <a href="#" class="list-group-item">อนุมัติการเบิก</a>
-            <a href="#" class="list-group-item">พิมพ์ใบเบิกจ่าย</a>
-            <a href="#" class="list-group-item">เพิ่มผู้ใช้งาน</a>
-            <a href="#" class="list-group-item">ดูรายงาน</a>
-           </div>  
-              
-          </div>
-            
-        </div><!--/span-->
         
         <div id="content" class="col-xs-11 col-sm-9" >
 
@@ -697,10 +666,17 @@ function DateThai($strDate)
               <div class="panel-body">
 				<h3>บันทึกการเบิกสำเร็จ</h3>
                 <hr>
-				<h4>Order number :
-				 <?php echo $no; ?> 
-                <h4> 
-				สามารถตรวจสอบ รายการเบิกวัสดุย้อนหลังได้ที่เมนู...
+                <center>
+                <img src="pic/success.png" alt="..." class="img-rounded">
+
+				<blockquote>
+				  <p>Order number : <a href="track.php"><?php echo $no; ?></a> </p>
+				  <strong>สามารถตรวจสอบ สถานะการเบิกได้ ที่เมนู ตรวจสอบสถานะ...</strong>
+				</blockquote>
+
+				</center>
+
+				
               </div>
             </div>
 			

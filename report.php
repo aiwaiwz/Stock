@@ -18,7 +18,7 @@
      
     // We can display the user's username to them by reading it from the session array.  Remember that because 
     // a username is user submitted content we must use htmlentities on it before displaying it to the user. 
-	
+	require "config.php";
 ?> 
 
 
@@ -28,11 +28,17 @@
 <head>
 
   <meta charset="UTF-8">
+
+
+    <script src="js/jquery-1.10.2.min.js"></script>
+	<script src="js/knockout-3.0.0.js"></script>
+	<script src="js/globalize.min.js"></script>
+	<script src="js/dx.chartjs.js"></script>
+
   
-  
-  <link href="src/css/main.css" rel="stylesheet">
-  <script type='text/javascript' src='src/js/jquery-1.9.1.js'></script>
-  <!-- Bootstrap core CSS -->
+ 	<link href="src/css/main.css" rel="stylesheet">
+
+  	<!-- Bootstrap core CSS -->
     <link href="src/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -65,8 +71,7 @@
 <script type='text/javascript'>//<![CDATA[ 
 $(window).load(function(){
 $(document).ready(function () {
-	$("#menu-user a:eq(2)").addClass("active");
-	console.log("Hello");
+	$("#menu-user a:eq(3)").addClass("active");
 	$("#report" ).hide();
 	
 
@@ -75,6 +80,187 @@ $(document).ready(function () {
 	    $("#report" ).hide();
 		
     });	
+
+
+ var dataSource = [
+	 
+	 <?
+	 $queryPrototype = 'SELECT SUM( widenmaterial.number ) AS \'sum\', COUNT( widenmaterial.`w_id` ) AS \'counts\' '
+        . ' FROM widenid'
+        . ' INNER JOIN widenmaterial ON widenid.w_id = widenmaterial.w_id'
+        . " AND widenmaterial.u_name = '" . $_SESSION[user][username]."'"
+        . ' AND MONTH( widenid.date_widen ) = ';
+	 
+		function checkNull($value){
+			if($value != NULL){
+				return $value;
+			}
+			else{
+				return 0;
+			}
+		}
+		
+		$mouthsThai = array("", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฏาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม");
+		
+		$months = array();
+		for($i = 11; $i > -1; $i--){
+		  $timestamp = strtotime("-$i month");
+		  $value =  date('n', strtotime("-$i month"));
+		  //$text  =  date('F', strtotime("-$i month"));  
+		  $text  =  $mouthsThai[ $value +0];
+		  $months[$value] =  $text;
+		}
+
+		foreach($months as $value => $text){
+			print '{ country: "' .$text. '", hydro: '; 
+			$query = $queryPrototype . $value;
+			$qry_result = mysql_query($query) or die(mysql_error());			
+			while($row = mysql_fetch_array($qry_result)){
+				print checkNull($row[sum]).' , oil: '.checkNull($row[counts]);
+			}
+			print '},
+			';
+		}
+
+	 
+	 ?>
+
+];
+
+
+ var dataSourceDonut = [
+	 
+	 <?
+	 
+	$query = 'SELECT category.c_name AS Category , SUM(widenmaterial.number) AS Total'
+        . ' FROM widenid'
+        . ' INNER JOIN widenmaterial'
+        . ' INNER JOIN category ON widenid.w_id = widenmaterial.w_id'
+        . " AND widenmaterial.u_name = '" . $_SESSION[user][username]."'"
+        . ' AND category.c_materialid = widenmaterial.id'
+        . ' GROUP BY category.c_name';
+	
+	$qry_result = mysql_query($query) or die(mysql_error());			
+	while($row = mysql_fetch_array($qry_result)){
+		print '{region: "'.$row[Category].'", val: '.$row[Total].'},
+		';
+	}
+
+	 ?>
+	 
+];
+
+var dataSourceSum = [
+	 
+	 <?
+	 
+	$query =  'SELECT category.c_materialname AS Name , SUM(widenmaterial.number) AS Total'
+        . ' FROM widenid'
+        . ' INNER JOIN widenmaterial'
+        . ' INNER JOIN category ON widenid.w_id = widenmaterial.w_id'
+        . " AND widenmaterial.u_name = '" . $_SESSION[user][username]."'"
+        . ' AND category.c_materialid = widenmaterial.id'
+        . ' GROUP BY category.c_materialname';
+	
+	$qry_result = mysql_query($query) or die(mysql_error());			
+	while($row = mysql_fetch_array($qry_result)){
+		print '{region: "'.$row[Name].'", val: '.$row[Total].'},
+		';
+	}
+
+	 ?>
+	 
+];
+
+$("#chartContainerSummary").dxPieChart({
+    dataSource: dataSourceSum,
+    title: "วัสดุที่เบิกมากที่สุด",
+	tooltip: {
+		enabled: true,
+		format:"millions",
+		percentPrecision: 2,
+		customizeText: function() { 
+			return this.percentText;
+		}
+	},
+	legend: {
+		horizontalAlignment: "right",
+		verticalAlignment: "top",
+		margin: 0
+	},
+	series: [{
+		type: "doughnut",
+		argumentField: "region",
+		label: {
+			visible: true,
+			//format: "millions",
+			connector: {
+				visible: true
+			}
+		}
+	}]
+});
+
+
+$("#chartContainerDonut").dxPieChart({
+    dataSource: dataSourceDonut,
+    title: "ประเภทวัสดุที่เบิกมากที่สุด",
+	tooltip: {
+		enabled: true,
+		format:"millions",
+		percentPrecision: 2,
+		customizeText: function() { 
+			return this.percentText;
+		}
+	},
+	legend: {
+		horizontalAlignment: "right",
+		verticalAlignment: "top",
+		margin: 0
+	},
+	series: [{
+		type: "doughnut",
+		argumentField: "region",
+		label: {
+			visible: true,
+			//format: "millions",
+			connector: {
+				visible: true
+			}
+		}
+	}]
+});
+
+
+$("#chartContainer").dxChart({
+    dataSource: dataSource,
+    commonSeriesSettings: {
+        argumentField: "country",
+        type: "spline",
+        point: {
+            hoverMode: 'allArgumentPoints'
+        }
+    },
+    crosshair: {
+        enabled: true
+    },
+    series: [
+        { valueField: "hydro", name: "จำนวนวัสดุทั้งหมดที่เบิก" },
+		{ valueField: "oil", name: "จำนวนครั้งที่เบิกทั้งหมด" }
+    ],
+    legend: {
+        verticalAlignment: "bottom",
+        horizontalAlignment: "center",
+        itemTextPosition: "bottom",
+        equalColumnWidth:true
+    },
+    title: "รายงานการเบิกย้อนหลัง",
+    tooltip: {
+        enabled: true,
+        shared: true
+    }
+});
+
 	
 }); // close the ready listener
 
@@ -126,6 +312,7 @@ $(document).ready(function () {
 
 </script>	  
 
+
 </head>
 
 <body>
@@ -149,8 +336,9 @@ $(document).ready(function () {
               <div class="panel-body">
                   <h3>ตรวจสอบสถานะการทำรายการขอเบิก</h3>
                    <hr>
+
                    <?php
-					require "config.php";
+					
 				
 					function DateThai($strDate)
 					{
@@ -222,10 +410,48 @@ $(document).ready(function () {
 						$display_string .= "</tr>";
 					}
 					$display_string .= "</table>";
-					echo $display_string;
+					//echo $display_string;
 				   ?>
+
+				   <div class="row">
+				   	<!--
+					  <div class="col-md-12">
+					  	<canvas id="canvas" height="480" width="830"></canvas>
+					  </div>
+-->
+					<div class="col-md-12">
+					  <div id="chartContainer" style="width: 100%; height: 440px;">
+						</div>
+					</div>
+
               </div>
+			  
+			  <hr>
+			  
+			  <div class="row">
+
+					<div class="col-md-12">
+					  <div id="chartContainerDonut" style="width: 100%; height: 440px;">
+						</div>
+					</div>
+				   
+              </div>
+			  
+			  <hr>
+			  
+			  <div class="row">
+
+					<div class="col-md-12">
+					  <div id="chartContainerSummary" style="width: 100%; height: 440px;">
+						</div>
+					</div>
+				   
+              </div>
+			  
+			  
             </div>
+
+
 			
 			 <div id="report" class="panel panel-carot">
 
@@ -276,9 +502,49 @@ $(document).ready(function () {
 
 <? require "footer.php"; ?>	
     
-<script>
+	<script>
 
-</script>
+
+		var lineChartData = {
+			labels : ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน ","พฤษภาคม ","มิถุนายน ","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"],
+	
+			datasets : [
+				{
+					fillColor : "rgba(151,187,205,0.5)",
+					strokeColor : "rgba(151,187,205,1)",
+					pointColor : "rgba(151,187,205,1)",
+					pointStrokeColor : "#fff",
+					data : [28,18,43,19,96,27,74,60,81,96,65,156]
+				}
+			],
+
+			scaleShowGridLines : true
+			
+		};
+
+		var options = {
+		    scaleFontColor: "#f00",
+		    datasetStrokeWidth: 5,
+		    scaleOverride : true,
+		    scaleOverlay : true,
+		   	animation : true,
+		    animationSteps : 60,
+		    scaleSteps : 10,
+			scaleStepWidth : 10,
+			scaleStartValue : 0
+
+		};
+
+
+
+
+
+
+
+
+	var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData,options);
+	
+	</script>
 
   <script>
     if (document.location.search.match(/type=embed/gi)) {

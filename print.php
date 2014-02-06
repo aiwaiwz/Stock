@@ -67,6 +67,8 @@
 $(window).load(function(){
 $(document).ready(function () {
 	console.log("Hello");
+
+	$("#menu-admin a:eq(3)").addClass("active");
 	
 	
 	$("#print-data" ).hide();
@@ -78,7 +80,14 @@ $(document).ready(function () {
 		$("#print-data").printThis();
 
     });	
+
+/*
+    $('#search').onEnterKey(
+    function() {
+        showorder();
+    } );
 	
+	*/
 	
 	
 }); // close the ready listener
@@ -165,6 +174,7 @@ $(document).ready(function () {
 				
 			}
 		}
+		return false ;
 	}
 	
 
@@ -186,40 +196,6 @@ $(document).ready(function () {
     
 <? require "menu.php"; ?>	
     
-    <div class="row">
-
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-          <div class="panel panel-carot">
-            <div class="panel-heading">
-              <h3 class="panel-title">เมนู</h3>
-            </div>
-              
-			<div class="list-group">
-            <a href="widenmaterial.php" class="list-group-item ">เบิกวัสดุ</a>
-            <a href="#" class="list-group-item">ดูจำนวนวัสดุคงเหลือ</a>
-            <a href="track.php" class="list-group-item">ตรวจสอบสถานะ</a>
-            <a href="#" class="list-group-item">ดูรายงานการเบิก</a>
-           </div>   
-              
-          </div>
-            
-          <div class="panel panel-carot">
-            <div class="panel-heading">
-              <h3 class="panel-title">สำหรับเจ้าหน้าที่พัสดุ</h3>
-            </div>
-              
-            <div class="list-group">
-            <a href="#" class="list-group-item">นำเข้าวัสดุ</a>
-            <a href="#" class="list-group-item">ดูวัสดุใกล้หมด</a>
-            <a href="#" class="list-group-item">อนุมัติการเบิก</a>
-            <a href="#" class="list-group-item active">พิมพ์ใบเบิกจ่าย</a>
-            <a href="#" class="list-group-item">เพิ่มผู้ใช้งาน</a>
-            <a href="#" class="list-group-item">ดูรายงาน</a>
-           </div>  
-              
-          </div>
-            
-        </div><!--/span-->
         
         <div class="col-xs-11 col-sm-9" >
 
@@ -236,7 +212,7 @@ $(document).ready(function () {
 						  <div class="form-group">
 							<input type="text" id="search" class="form-control" id="texts" placeholder="เช่น 25/2557">
 						  </div>
-						  <button type="button" onclick="showorder()" class="btn btn-primary">ค้นหา</button>
+						  <button type="submit" id="search_btn" onclick="return showorder();" class="btn btn-primary">ค้นหา</button>
 					  </form></div>
 					</div>
 					<hr>
@@ -279,7 +255,14 @@ $(document).ready(function () {
                     <div class="col-md-4">
                     </div>
                     <div class="col-md-4">
-						<input id="print" type='button' class="btn btn-block btn btn-danger" value='Print'/>
+					
+					
+					
+					<button id='print' type="button" class="btn btn-block btn btn-danger">
+                    <span class="glyphicon glyphicon-print"></span> Print
+                    </button>
+					
+						
                     </div>
 					<div class="col-md-4">
                     </div>

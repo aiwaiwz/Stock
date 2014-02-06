@@ -65,6 +65,9 @@
 <script type='text/javascript'>//<![CDATA[ 
 $(window).load(function(){
 $(document).ready(function () {
+
+	$("#menu-admin a:eq(2)").addClass("active");
+
 	console.log("Hello");
 	$("#report" ).hide();
 	
@@ -168,41 +171,7 @@ $(document).ready(function () {
     
 <? require "menu.php"; ?>	
     
-    <div class="row">
-
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-          <div class="panel panel-carot">
-            <div class="panel-heading">
-              <h3 class="panel-title">เมนู</h3>
-            </div>
-              
-			<div class="list-group">
-            <a href="widenmaterial.php" class="list-group-item ">เบิกวัสดุ</a>
-            <a href="#" class="list-group-item">ดูจำนวนวัสดุคงเหลือ</a>
-            <a href="track.php" class="list-group-item ">ตรวจสอบสถานะ</a>
-            <a href="#" class="list-group-item">ดูรายงานการเบิก</a>
-           </div>   
-              
-          </div>
-            
-          <div class="panel panel-carot">
-            <div class="panel-heading">
-              <h3 class="panel-title">สำหรับเจ้าหน้าที่พัสดุ</h3>
-            </div>
-              
-            <div class="list-group">
-            <a href="#" class="list-group-item">นำเข้าวัสดุ</a>
-            <a href="#" class="list-group-item">ดูวัสดุใกล้หมด</a>
-            <a href="#" class="list-group-item active">อนุมัติการเบิก</a>
-            <a href="#" class="list-group-item">พิมพ์ใบเบิกจ่าย</a>
-            <a href="#" class="list-group-item">เพิ่มผู้ใช้งาน</a>
-            <a href="#" class="list-group-item">ดูรายงาน</a>
-           </div>  
-              
-          </div>
-            
-        </div><!--/span-->
-        
+      
         <div class="col-xs-11 col-sm-9" >
 
             <div id="tracking" class="panel panel-carot">
@@ -255,7 +224,26 @@ $(document).ready(function () {
 						else{
 							$display_string .= "<td>รอดำเนินการ</td>";
 						}
-						$display_string .= "<td>$row[status]</td>";
+						
+
+						if($row[status] == 'อนุมัติ'){
+							$display_string .= '<td><button type="button"class="btn btn-success btn-xs mybtn">
+                                <span class="glyphicon glyphicon-ok-sign"></span> '.$row[status].'
+                        </button></td>';
+
+						}
+						elseif ($row[status] == 'รออนุมัติ'){
+							$display_string .= '<td><button type="button"class="btn btn-warning btn-xs mybtn">
+                                <span class="glyphicon glyphicon-time"></span> '.$row[status].'
+                        </button></td>';
+						}else{
+							$display_string .= '<td><button type="button"class="btn btn-danger btn-xs mybtn">
+                                <span class="glyphicon glyphicon-remove-sign"></span> '.$row[status].'
+                        </button></td>';
+
+						}
+						
+						//$display_string .= "<td>$row[status]</td>";
 						$display_string .= '<td>
 							<div class="myclass" id="'.$row[w_id].'">
                             <button type="button" onclick="showorder('.$row[w_id].','.$row[id_widen].','.$strYear.')" class="btn btn-info btn-xs mybtn">
