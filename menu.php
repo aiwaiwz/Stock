@@ -28,6 +28,7 @@ echo'
             <div id="menu-user" class="list-group"> <a href="widenmaterial.php" class="list-group-item">เบิกวัสดุ</a>
  <a href="remaining.php" class="list-group-item">ดูจำนวนวัสดุคงเหลือ</a>
  <a href="track.php" class="list-group-item">ตรวจสอบสถานะ</a>
+ <a href="print.php" class="list-group-item">พิมพ์ใบเบิกจ่าย</a>
  <a href="report.php" class="list-group-item">ดูรายงานการเบิก</a>
 
             </div>
@@ -40,7 +41,7 @@ echo'
             <div id="menu-admin" class="list-group"> <a href="imports.php" class="list-group-item">นำเข้าวัสดุ</a>
  <a href="closeout.php" class="list-group-item">ดูวัสดุใกล้หมด</a>
  <a href="approve.php" class="list-group-item">อนุมัติการเบิก</a>
- <a href="print.php" class="list-group-item">พิมพ์ใบเบิกจ่าย</a>
+
  <a href="register.php" class="list-group-item">เพิ่มผู้ใช้งาน</a>
  <a href="reports.php" class="list-group-item">ดูรายงาน</a>
 

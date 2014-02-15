@@ -30,6 +30,7 @@
     <meta charset="UTF-8">
     <script type='text/javascript' src='src/js/jquery-1.9.1.js'></script>
 	<script type='text/javascript' src='src/js/additem.js'></script>
+	<script type='text/javascript' src='src/js/bootstrap.min.js'></script>
     <link href="src/css/main.css" rel="stylesheet">
     <!-- Bootstrap core CSS -->
     <link href="src/css/bootstrap.css" rel="stylesheet">
@@ -183,7 +184,7 @@ $(document).ready(function () { // ran when the document is fully loaded
 		
         if (value == 0) {
             var newOptions = {
-                '00000': '--เลือกชนิดของวัสดุ--'
+                //'00000': '--เลือกชนิดของวัสดุ--'
             };
         } else if (value == 1)  {
             var newOptions = {
@@ -324,13 +325,14 @@ $(document).ready(function () { // ran when the document is fully loaded
             var options = select.attr('options');
         }
         $('option', select).remove();
+		
+
+		$("#class").prepend("<option value='000000'>--เลือกชนิดของวัสดุ--</option>").val('');
+
 
         $.each(newOptions, function (val, text) {
             options[options.length] = new Option(text, val);
         });
-        //select.val(selectedOption);
-
-        //console.log($('#class').val());
 
         // crashes in IE, if console not open
         // make the text of all label elements be the value 
@@ -359,6 +361,25 @@ $(document).ready(function () { // ran when the document is fully loaded
         });
 
     });
+	
+	function sortObj(arr){
+		// Setup Arrays
+		var sortedKeys = new Array();
+		var sortedObj = {};
+
+		// Separate keys and sort them
+		for (var i in arr){
+			sortedKeys.push(i);
+		}
+		
+		sortedKeys.sort();
+		console.log(sortedKeys);
+		// Reconstruct sorted obj based on keys
+		for (var i in sortedKeys){
+			sortedObj[sortedKeys[i]] = arr[sortedKeys[i]];
+		}
+		return sortedObj;
+	}
 	
 	function convertDate(inputFormat) {
 	  var d = new Date(inputFormat);
@@ -444,6 +465,20 @@ $(document).ready(function () { // ran when the document is fully loaded
 	});
 	
 	
+	$("#class").change(function() {
+		var select = $("#class :selected");
+		if(select.val() == 000000 ){
+		
+		}
+		else{
+			$('#myModal').modal('show'); 
+			$('#header-modal').html('<h4 class="modal-title" id="myModalLabel">'+select.text()+'</h4>');
+			
+		}
+		//alert($("#class :selected").text());
+	});
+	
+	
 }); // close the ready listener
 });//]]>  
 
@@ -482,6 +517,7 @@ function DateThai($strDate)
     
         
         <div id="content" class="col-xs-11 col-sm-9" >
+		
 
             <div id="select-material" class="panel panel-carot">
 
@@ -621,12 +657,36 @@ function DateThai($strDate)
 					  </div>
 					  
 					  <?php
+						$no = 1 ; 
+						
+						$query = "SELECT MAX( `id_widen` ) AS id, COUNT(  `id_widen` ) AS count FROM  `widenid`";
+						$qry_result = mysql_query($query) or die(mysql_error());
+						//print $num_rows = mysql_num_rows($qry_result);
+						//$row = mysql_fetch_array($qry_resul) or die(mysql_error().":<br />".$query);
+						//print_r($row);
+						
+						
+						while($row = mysql_fetch_array($qry_result)){
+							if ($row[count] == 0){
+								$query1 = "ALTER TABLE `widenid` AUTO_INCREMENT = 1";
+								$qry_result1 = mysql_query($query1) or die(mysql_error());
+							}
+							else{
+								$query1 = "SELECT `id_widen` FROM `widenid` WHERE  `id_widen` = '$row[id]'";
+								$qry_result1 = mysql_query($query1) or die(mysql_error());
+								while($row = mysql_fetch_array($qry_result1)){
+									$no = $row[id_widen] + $no;
+								}
+							}
+						}
+						/*
 						$query = "SELECT `id_widen` FROM `widenid` WHERE  `id_widen` = (SELECT max(`id_widen`) FROM `widenid`)";
 						$qry_result = mysql_query($query) or die(mysql_error());
 						$no = 1 ; 
 						while($row = mysql_fetch_array($qry_result)){
 							$no =  $row[id_widen]+ $no;
 						}
+						*/
 					  ?>
 					  
 					  <div class="col-md-6">
@@ -684,6 +744,37 @@ function DateThai($strDate)
         </div>
       </div><!--/row-->
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div id="header-modal">
+			
+		</div>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+		<div class="col-xs-6 col-md-3">
+        </div> 
+        <div class="col-xs-6 col-md-3">
+             <button  type="button" class="btn btn-block btn-success">เพิ่ม</button>
+        </div>
+        <div class="col-xs-6 col-md-3">
+			<button type="button" class="btn btn-block btn-danger" data-dismiss="modal">ยกเลิก</button>
+        </div>
+        <div class="col-xs-6 col-md-3">
+        </div>   
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <? require "footer.php"; ?>	
 

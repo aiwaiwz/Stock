@@ -73,20 +73,48 @@ $(window).load(function(){
 $(document).ready(function () {
 	$("#menu-user a:eq(3)").addClass("active");
 
-	
 	var dataSourceBar = [
-		{ state: "ไตรมาสที่ 1 (มกราคม-มีนาคม)", year1998: 423.721, year2001: 476.851, year2004: 528.904 },
-		{ state: "ไตรมาสที่ 2 (เมษายน-มิถุนายน)", year1998: 178.719, year2001: 195.769, year2004: 227.271 },
-		{ state: "ไตรมาสที่ 3 (กรกฏาคม-กันยายน)", year1998: 308.845, year2001: 335.793, year2004: 372.576 },
-		{ state: "ไตรมาสที่ 4 (ตุลาคม-ธันวาคม)", year1998: 348.555, year2001: 374.771, year2004: 418.258 }
+	<?
+		
+		$sql = "SELECT a.years , a. quarter , b.sum , b.counts , a.alls
+				FROM (SELECT YEAR( date_widen ) AS 'years', QUARTER( `date_widen` ) AS quarter, COUNT( * ) AS 'alls'
+				FROM `widenid` 
+				WHERE `status` = 'อนุมัติ'
+				GROUP BY quarter) a
+
+				INNER JOIN
+
+				(SELECT YEAR( date_widen ) AS 'years', QUARTER( `date_widen` ) AS quarter, SUM( widenmaterial.number ) AS 'sum', COUNT( widenmaterial.`w_id` ) AS 'counts'
+				FROM `widenid` 
+				INNER JOIN widenmaterial
+				INNER JOIN category ON widenid.w_id = widenmaterial.w_id
+				AND category.c_materialid = widenmaterial.id
+				GROUP BY quarter) b 
+
+				ON a.quarter = b.quarter AND a.years = b.years";
+				
+				$qry_result = mysql_query($sql) or die(mysql_error());			
+					while($row = mysql_fetch_array($qry_result)){
+						print '{ state: "ไตรมาสที่ ' .checkNull($row[quarter]). ' ('.checkNull($row[years]+543).')", year2004: '. checkNull($row[sum]).', year2001: '. checkNull($row[counts]).', year1998: '. checkNull($row[alls]); 
+						print '},
+						';
+					}
+		
+	?>
 	];
 	
+
 	
 	var dataSourceApp = [
-    { region: "Russia", val: 12 },
-    { region: "Canada", val: 7 },
-    { region: "USA", val: 7 }
-	];
+	<?
+		$sql = 'SELECT `status` , COUNT( * ) as count FROM widenid GROUP BY `status`';
+		$qry_result = mysql_query($sql) or die(mysql_error());			
+			while($row = mysql_fetch_array($qry_result)){
+				print '{ region: "' .checkNull($row[status]). '", val: '. checkNull($row[count]); 
+				print '},
+			';
+			}
+	?>];
 
 	
 	

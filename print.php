@@ -68,7 +68,7 @@ $(window).load(function(){
 $(document).ready(function () {
 	console.log("Hello");
 
-	$("#menu-admin a:eq(3)").addClass("active");
+	$("#menu-user a:eq(3)").addClass("active");
 	
 	
 	$("#print-data" ).hide();
