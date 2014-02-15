@@ -96,7 +96,7 @@ $(document).ready(function () {
 
 	var tmpW_ID = ""; 
 
-	function showorder(w_id,no,year){
+	function showorder(w_id,no,year,status){
 		tmpW_ID =  w_id;
 		$("#tracking" ).hide();
 	    $("#report" ).show();
@@ -130,7 +130,18 @@ $(document).ready(function () {
 		}
 		// Now get the value from user and pass it to
 		// server script.
-		ajaxRequest.open("GET", "ajax/tracking.php?w_id="+w_id , true);
+		
+		if(status == 1){
+			ajaxRequest.open("GET", "ajax/tracking.php?w_id="+w_id , true);
+			$("#approve").prop('disabled', true);
+			$("#cancel").prop('disabled', true);
+		}
+		else{
+			ajaxRequest.open("GET", "ajax/tracking.php?w_id="+w_id+"&type=status" , true);
+			$("#approve").prop('disabled', false);
+			$("#cancel").prop('disabled', false);
+		}
+		
 		ajaxRequest.send(null);
 		
 		//$("#objective" ).html();
@@ -196,7 +207,8 @@ $(document).ready(function () {
 					}
 				
 					//build query
-					$query = "SELECT * FROM  `widenid` WHERE  `u_id` = ( SELECT id FROM users WHERE username =  '".$_SESSION['user']['username']."' ) ";
+					//$query = "SELECT * FROM  `widenid` WHERE  `u_id` = ( SELECT id FROM users WHERE username =  '".$_SESSION['user']['username']."' ) ";
+					$query = "SELECT * FROM  `widenid` order by id_widen desc";
 
 					$qry_result = mysql_query($query) or die(mysql_error());
 				
@@ -218,6 +230,9 @@ $(document).ready(function () {
 						$display_string .= "<tr>";
 						$display_string .= "<td>$newD</td>";
 						$display_string .= "<td>$no_order</td>";
+
+						$statusType = 0;
+
 						if($thisyear >= $strYear){
 							$display_string .= "<td>$dateend</td>";
 						}
@@ -225,28 +240,34 @@ $(document).ready(function () {
 							$display_string .= "<td>รอดำเนินการ</td>";
 						}
 						
+						
 
 						if($row[status] == 'อนุมัติ'){
+							$statusType = 1;
 							$display_string .= '<td><button type="button"class="btn btn-success btn-xs mybtn">
                                 <span class="glyphicon glyphicon-ok-sign"></span> '.$row[status].'
                         </button></td>';
 
 						}
 						elseif ($row[status] == 'รออนุมัติ'){
+							$statusType = 0;
 							$display_string .= '<td><button type="button"class="btn btn-warning btn-xs mybtn">
                                 <span class="glyphicon glyphicon-time"></span> '.$row[status].'
                         </button></td>';
 						}else{
+							$statusType = 1;
 							$display_string .= '<td><button type="button"class="btn btn-danger btn-xs mybtn">
                                 <span class="glyphicon glyphicon-remove-sign"></span> '.$row[status].'
                         </button></td>';
 
 						}
+
+
 						
 						//$display_string .= "<td>$row[status]</td>";
 						$display_string .= '<td>
 							<div class="myclass" id="'.$row[w_id].'">
-                            <button type="button" onclick="showorder('.$row[w_id].','.$row[id_widen].','.$strYear.')" class="btn btn-info btn-xs mybtn">
+                            <button type="button" onclick="showorder('.$row[w_id].','.$row[id_widen].','.$strYear.','.$statusType.')" class="btn btn-info btn-xs mybtn">
                                 <span class="glyphicon glyphicon-list"></span> ใบเบิก
                             </button>
 							</div>
@@ -295,7 +316,7 @@ $(document).ready(function () {
 						<input id="approve" type='button' class="btn btn-block btn btn-success" value='อนุมัติ'/>
                     </div>
                     <div class="col-md-4">
-						<input id="cancel"  type='button' class="btn btn-block btn btn-warning" value='ไม่อนุมัติ'/>
+						<input id="cancel"  type='button' class="btn btn-block btn btn-warning" value='ยกเลิกรายการ'/>
                     </div>
 					<div class="col-md-4">
 						<input id="back" type='button' class="btn btn-block btn btn-danger" value='กลับ'/>

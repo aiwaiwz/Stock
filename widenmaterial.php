@@ -31,6 +31,7 @@
     <script type='text/javascript' src='src/js/jquery-1.9.1.js'></script>
 	<script type='text/javascript' src='src/js/additem.js'></script>
 	<script type='text/javascript' src='src/js/bootstrap.min.js'></script>
+	<script type='text/javascript' src='src/js/holder.js'></script>
     <link href="src/css/main.css" rel="stylesheet">
     <!-- Bootstrap core CSS -->
     <link href="src/css/bootstrap.css" rel="stylesheet">
@@ -340,6 +341,11 @@ $(document).ready(function () { // ran when the document is fully loaded
     }); // close the change listener
 
     $("#add").click(function () {
+		$('#myModal').modal('hide'); 
+		$('#class').prop('selectedIndex',0);
+		$('#type').prop('selectedIndex',0);
+		$("#value").val('');
+
 		//$("html, body").animate({ scrollTop: $("#ajaxDiv").offset().top }, 1000);
         //alert("คุณเพิ่ม " + $('#class').val() + "จำนวน " + $('#value').val());
     });
@@ -348,6 +354,11 @@ $(document).ready(function () { // ran when the document is fully loaded
         var newOptions = {
             '00000': '--เลือกชนิดของวัสดุ--'
         };
+		
+		$('#class').prop('selectedIndex',0);
+		$('#type').prop('selectedIndex',0);
+		$("#value").val('');
+		
         var select = $('#class');
         if (select.prop) {
             var options = select.prop('options');
@@ -361,25 +372,6 @@ $(document).ready(function () { // ran when the document is fully loaded
         });
 
     });
-	
-	function sortObj(arr){
-		// Setup Arrays
-		var sortedKeys = new Array();
-		var sortedObj = {};
-
-		// Separate keys and sort them
-		for (var i in arr){
-			sortedKeys.push(i);
-		}
-		
-		sortedKeys.sort();
-		console.log(sortedKeys);
-		// Reconstruct sorted obj based on keys
-		for (var i in sortedKeys){
-			sortedObj[sortedKeys[i]] = arr[sortedKeys[i]];
-		}
-		return sortedObj;
-	}
 	
 	function convertDate(inputFormat) {
 	  var d = new Date(inputFormat);
@@ -464,16 +456,64 @@ $(document).ready(function () { // ran when the document is fully loaded
 		}
 	});
 	
+	function getRemain(c_id){
+		var theUrl ="ajax/get_remain.php?c_id="+c_id;
+		console.log(theUrl);
+		var xmlHttp = null;
+		xmlHttp = new XMLHttpRequest();
+		xmlHttp.open( "GET", theUrl, false );
+		xmlHttp.send( null );
+		return xmlHttp.responseText;
+	}
+	
 	
 	$("#class").change(function() {
+		var battletext = 
+		<?php
+				require "config.php";	
+				$var = array();
+				$query = "SELECT `name` FROM `test` WHERE `u_name` = '".$_SESSION['user']['username']."'";
+				$qry_result = mysql_query($query) or die(mysql_error());
+				while($row = mysql_fetch_array($qry_result)){
+					array_push($var,$row[name]);
+				}
+				echo json_encode($var);
+		?>;
+
+
 		var select = $("#class :selected");
 		if(select.val() == 000000 ){
 		
 		}
 		else{
+			var remainMax = getRemain(select.val());
+
+			var checkStock = false;
+			for(var result in battletext){
+				if(select.text() == battletext[result]){
+					checkStock = true;
+				}
+			}
+
+
+			console.log(remainMax);
+			if(remainMax > 0 && checkStock == false){
+				$("#value").prop('disabled', false);
+				$("#add").prop('disabled', false);
+				$("#value").attr({
+				   "max" : remainMax,        // substitute your own
+				   "min" : 1          		// values (or variables) here
+				});
+
+
+			}else{
+				$("#add").prop('disabled', true);
+				$("#value").prop('disabled', true);
+			}
+			
 			$('#myModal').modal('show'); 
 			$('#header-modal').html('<h4 class="modal-title" id="myModalLabel">'+select.text()+'</h4>');
-			
+			$('#remain').html('<ul class="nav nav-pills nav-stacked"><li class="active"><a href="#"><span class="badge pull-right">'+ remainMax +'</span>'+select.text()+'</a></li></ul>');	
 		}
 		//alert($("#class :selected").text());
 	});
@@ -525,9 +565,9 @@ function DateThai($strDate)
 
                   <h3>เลือกรายการวัสดุ</h3>
                    <hr>
-                   <form class="form-horizontal" role="form">
+                   <form  role="form">
                        <center>   
-                       <div class="col-xs-6 col-md-4">
+                       <div class="col-xs-6 col-md-6">
                            <div class="form-group">
                             <label class="right" >เลือกประเภทวัสดุ</label><br>
 							
@@ -547,26 +587,21 @@ function DateThai($strDate)
 
                           </div>
                        </div>
-                    <div class="col-xs-6 col-md-4">
+                    <div class="col-xs-6 col-md-6">
                         <div class="form-group">
                       <label class="right" >เลือกรายการวัสดุ</label><br>
 						<select id="class" class="form-control">
 						<option value="101046/05">--เลือกชนิดของวัสดุ--</option>
 						</select>
                     </div></div>
+
                            
-                           
-                  <div class="col-xs-6 col-md-4">
-                       <div class="form-group">
-                       <label class="right">เลือกรายการวัสดุ</label>
-                            <input id="value" type="number" class="form-control" max="100" min="1"> 
-                       </div>
-                  </div>
+
                         
                   <br><br> <br> <br> 
                   
                   <div class="row">
-
+					<!--
                     <div class="col-xs-6 col-md-3">
                     </div> 
                     <div class="col-xs-6 col-md-3">
@@ -578,6 +613,8 @@ function DateThai($strDate)
                     <div class="col-xs-6 col-md-3">
                     </div>   
                   </div>
+				  -->
+				  
                   </center>
                   </form>
 
@@ -757,16 +794,46 @@ function DateThai($strDate)
 		</div>
       </div>
       <div class="modal-body">
-        ...
+		
+		<center>
+			<img data-src="src/js/holder.js/320x240" alt="...">
+		</center>
+		
+		<hr>
+		
+		<div class="row">
+        <div class="col-xs-6 col-md-6">
+		
+		<div class="form-group">
+            <label class="right">จำนวนวัสดุที่เหลือ</label>
+				<div id="remain" class="list-group">
+					<ul class="nav nav-pills nav-stacked">
+					  <li class="active">
+						<a href="#"><span class="badge pull-right">42</span>Home</a>
+					  </li>
+					</ul>
+				</div>
+        </div>
+
+		</div>
+		<div class="col-xs-6 col-md-6">
+            <div class="form-group">
+				<label class="right">เลือกจำนวนวัสดุ</label>
+				<input id="value" type="number" class="form-control" max="100" min="1"> 
+            </div>
+       </div>
+	   </div>
+		
       </div>
       <div class="modal-footer">
 		<div class="col-xs-6 col-md-3">
         </div> 
         <div class="col-xs-6 col-md-3">
-             <button  type="button" class="btn btn-block btn-success">เพิ่ม</button>
+			<input id="add" type='button' onclick='ajaxFunction(false)' class="btn btn-block btn btn-success" value='เพิ่ม'/>
+
         </div>
         <div class="col-xs-6 col-md-3">
-			<button type="button" class="btn btn-block btn-danger" data-dismiss="modal">ยกเลิก</button>
+			<button id="reset" type="button" class="btn btn-block btn-danger" data-dismiss="modal">ยกเลิก</button>
         </div>
         <div class="col-xs-6 col-md-3">
         </div>   
